@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -30,7 +33,23 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required',
+            'slug' => 'required|unique:posts',
+            'category_id' => 'required|exists:categories,id'
+        ]);
+
+        $data['user_id'] = auth()->id();
+
+        $post = Post::create($data);
+
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => '¡Bien hecho!',
+            'text' => 'El Post se ha creado correctamente.'
+        ]);
+
+        return redirect()->route('admin.posts.edit', compact('post'));
     }
 
     /**
