@@ -1,7 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return "Hello Admin";
-})->name('dashboard');
+Route::resource('categories', CategoryController::class);

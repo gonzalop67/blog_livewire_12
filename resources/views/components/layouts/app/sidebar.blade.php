@@ -7,7 +7,14 @@
                 'url' => route('dashboard'),
                 'current' => request()->routeIs('dashboar'),
             ],
+            [
+                'name' => 'Categorías',
+                'icon' => 'funnel',
+                'url' => route('admin.categories.index'),
+                'current' => request()->routeIs('admin.categories.*'),
+            ],
         ],
+        
     ];
 @endphp
 
