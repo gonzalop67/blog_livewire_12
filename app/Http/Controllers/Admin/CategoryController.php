@@ -37,6 +37,12 @@ class CategoryController extends Controller
 
         Category::create($data);
 
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => '¡Bien hecho!',
+            'text' => 'La categoría se ha creado correctamente.'
+        ]);
+
         return redirect()->route('admin.categories.index');
     }
 
