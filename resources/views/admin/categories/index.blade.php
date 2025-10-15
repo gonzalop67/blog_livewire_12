@@ -21,7 +21,7 @@
                     <th scope="col" class="px-6 py-3">
                         Name
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3" width="10px">
                         Edit
                     </th>
                 </tr>
@@ -37,7 +37,7 @@
                             {{ $category->name }}
                         </td>
                         <td class="px-6 py-4">
-                            $2999
+                            <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-blue text-xs">Editar</a>
                         </td>
                     </tr>
                 @endforeach
