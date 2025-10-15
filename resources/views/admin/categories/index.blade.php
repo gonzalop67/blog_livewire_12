@@ -40,7 +40,7 @@
                             <div class="flex space-x-2">
                                 <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-blue text-xs">Editar</a>
 
-                                <form action="{{ route('admin.categories.destroy', $category) }}" method="POST">
+                                <form class="delete-form" action="{{ route('admin.categories.destroy', $category) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-red text-xs">
@@ -54,5 +54,32 @@
             </tbody>
         </table>
     </div>
+
+    @push('js')
+        <script>
+            forms = document.querySelectorAll('.delete-form');
+
+            forms.forEach(form => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: "¿Estás seguro?",
+                        text: "¡No podrás revertir esto!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Sí, eliminarlo!",
+                        cancelButtonText: "Cancelar"
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                })
+            })
+        </script>
+    @endpush
 
 </x-layouts.app>
