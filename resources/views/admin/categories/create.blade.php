@@ -2,7 +2,7 @@
     <flux:breadcrumbs class="mb-4">
         <flux:breadcrumbs.item href="{{ route('dashboard') }}">Dashboard</flux:breadcrumbs.item>
         <flux:breadcrumbs.item href="{{ route('admin.categories.index') }}">Categorías</flux:breadcrumbs.item>
-        <flux:breadcrumbs.item>Categorías</flux:breadcrumbs.item>
+        <flux:breadcrumbs.item>Crear</flux:breadcrumbs.item>
     </flux:breadcrumbs>
 
     <div class="card">
