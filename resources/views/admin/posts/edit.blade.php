@@ -14,13 +14,13 @@
             @php
                 $ruta = dirname(dirname(__FILE__));
             @endphp
-            {{-- <img class="w-full aspect-video object-cover" src="https://placehold.co/90x160?text=Imagen+Post" alt=""> --}}
-            <img class="w-full aspect-video object-cover" src="{{ $post->image_path ? Storage::url($post->image_path) : "https://placehold.co/90x160?text=Imagen+Post" }}" alt="">
+
+            <img id="imgPreview" class="w-full aspect-video object-cover" src="{{ $post->image_path ? Storage::url($post->image_path) : "https://placehold.co/90x160?text=Imagen+Post" }}" alt="">
 
             <div class="absolute top-8 right-8">
                 <label class="bg-white px-4 py-2 rounded-lg cursor-pointer">
                     Cambiar imagen
-                    <input class="hidden" type="file" name="image" accept="image/*">
+                    <input class="hidden" type="file" name="image" accept="image/*" onchange="previewImage(event, '#imgPreview')">
                 </label>
             </div>
         </div>
@@ -69,5 +69,31 @@
             </div>
         </div>
     </form>
+
+    @push('js')
+        <script>
+            function previewImage(event, querySelector){
+
+                //Recuperamos el input que desencadeno la acción
+                let input = event.target;
+                
+                //Recuperamos la etiqueta img donde cargaremos la imagen
+                let imgPreview = document.querySelector(querySelector);
+
+                // Verificamos si existe una imagen seleccionada
+                if(!input.files.length) return
+                
+                //Recuperamos el archivo subido
+                let file = input.files[0];
+
+                //Creamos la url
+                let objectURL = URL.createObjectURL(file);
+                
+                //Modificamos el atributo src de la etiqueta img
+                imgPreview.src = objectURL;
+                            
+            }
+        </script>
+    @endpush
 
 </x-layouts.app>
