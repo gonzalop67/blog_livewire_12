@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = Category::orderBy('id', 'desc')->get();
-
-        return view('admin.categories.index', compact('categories'));
+        $tags = Tag::all();
+        return view('admin.tags.index', compact('tags'));
     }
 
     /**
@@ -23,7 +22,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return view('admin.tags.create');
     }
 
     /**
@@ -32,61 +31,69 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255|unique:tags'
         ]);
 
-        Category::create($data);
+        Tag::create($data);
 
         session()->flash('swal', [
             'icon' => 'success',
             'title' => '¡Bien hecho!',
-            'text' => 'La categoría se ha creado correctamente.'
+            'text' => 'La etiqueta se ha creado correctamente.'
         ]);
 
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.tags.index');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Tag $tag)
+    {
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit(Tag $tag)
     {
-        return view('admin.categories.edit', compact('category'));
+        return view('admin.tags.edit', compact('tag'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Tag $tag)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255'
+        $request->validate([
+            'name' => 'required|string|max:255|unique:tags,name,' . $tag->id,
         ]);
 
-        $category->update($data);
+        $tag->update($request->all());
 
         session()->flash('swal', [
             'icon' => 'success',
             'title' => '¡Bien hecho!',
-            'text' => 'La categoría se ha actualizado correctamente.'
+            'text' => 'La etiqueta se ha actualizado correctamente.'
         ]);
 
-        return redirect()->route('admin.categories.edit', $category);
+        return redirect()->route('admin.tags.edit', $tag);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Tag $tag)
     {
-        $category->delete();
+        $tag->delete();
 
         session()->flash('swal', [
             'icon' => 'success',
             'title' => '¡Bien hecho!',
-            'text' => 'La categoría se ha eliminado correctamente.'
+            'text' => 'La etiqueta se ha eliminado correctamente.'
         ]);
 
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.tags.index');
     }
 }
