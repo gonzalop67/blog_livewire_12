@@ -70,7 +70,7 @@
         </div>
     </form>
 
-    @push('js')
+    {{-- @push('js')
         <script>
             function previewImage(event, querySelector){
 
@@ -94,6 +94,6 @@
                             
             }
         </script>
-    @endpush
+    @endpush --}}
 
 </x-layouts.app>
