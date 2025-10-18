@@ -1,5 +1,9 @@
 <x-layouts.app :title="__('Posts')">
 
+    @push('css')
+        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+    @endpush
+
     <flux:breadcrumbs class="mb-4">
         <flux:breadcrumbs.item href="{{ route('dashboard') }}">Dashboard</flux:breadcrumbs.item>
         <flux:breadcrumbs.item href="{{ route('admin.posts.index') }}">Posts</flux:breadcrumbs.item>
@@ -47,9 +51,18 @@
             <flux:textarea class="mb-4" label="Resumen" name="excerpt">{{ old('excerpt', $post->excerpt) }}
             </flux:textarea>
 
-            <flux:textarea class="mb-4" label="Contenido" name="content" rows="16">
+            {{-- <flux:textarea class="mb-4" label="Contenido" name="content" rows="16">
                 {{ old('content', $post->content) }}
-            </flux:textarea>
+            </flux:textarea> --}}
+
+            <div class="mb-4">
+                <p class="font-medium text-sm mb-1">
+                    Contenido
+                </p>
+
+                <div id="editor">{!! old('content', $post->content) !!}</div>
+                <textarea class="hidden" name="content" id="content">{{ old('content', $post->content) }}</textarea>
+            </div>
 
             <div class="mb-4">
                 <p class="text-sm font-medium mb-1">Etiquetas</p>
@@ -58,10 +71,8 @@
                     @foreach ($tags as $tag)
                         <li>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" name="tags[]" 
-                                value="{{ $tag->id }}"
-                                @checked(in_array($tag->id, old('tags', $post->tags->pluck('id')->toArray())))
-                                >
+                                <input type="checkbox" name="tags[]" value="{{ $tag->id }}"
+                                    @checked(in_array($tag->id, old('tags', $post->tags->pluck('id')->toArray())))>
                                 <span>{{ $tag->name }}</span>
                             </label>
                         </li>
@@ -96,30 +107,18 @@
         </div>
     </form>
 
-    {{-- @push('js')
+    @push('js')
+        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
         <script>
-            function previewImage(event, querySelector){
+            const quill = new Quill('#editor', {
+                theme: 'snow'
+            });
 
-                //Recuperamos el input que desencadeno la acción
-                let input = event.target;
-                
-                //Recuperamos la etiqueta img donde cargaremos la imagen
-                let imgPreview = document.querySelector(querySelector);
-
-                // Verificamos si existe una imagen seleccionada
-                if(!input.files.length) return
-                
-                //Recuperamos el archivo subido
-                let file = input.files[0];
-
-                //Creamos la url
-                let objectURL = URL.createObjectURL(file);
-                
-                //Modificamos el atributo src de la etiqueta img
-                imgPreview.src = objectURL;
-                            
-            }
+            quill.on('text-change', function() {
+                document.querySelector('#content').value = quill.root.innerHTML;
+            });
         </script>
-    @endpush --}}
+    @endpush
 
 </x-layouts.app>
