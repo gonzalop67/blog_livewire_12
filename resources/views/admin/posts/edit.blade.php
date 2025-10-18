@@ -51,10 +51,6 @@
             <flux:textarea class="mb-4" label="Resumen" name="excerpt">{{ old('excerpt', $post->excerpt) }}
             </flux:textarea>
 
-            {{-- <flux:textarea class="mb-4" label="Contenido" name="content" rows="16">
-                {{ old('content', $post->content) }}
-            </flux:textarea> --}}
-
             <div class="mb-4">
                 <p class="font-medium text-sm mb-1">
                     Contenido
