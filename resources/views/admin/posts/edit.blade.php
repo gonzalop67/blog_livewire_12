@@ -20,7 +20,7 @@
             @endphp
 
             <img id="imgPreview" class="w-full aspect-video object-cover"
-                src="{{ $post->image_path ? Storage::url($post->image_path) : 'https://placehold.co/90x160?text=Imagen+Post' }}"
+                src="{{ $post->image }}"
                 alt="">
 
             <div class="absolute top-8 right-8">
